@@ -1,0 +1,53 @@
+{
+    "hosts": [
+        {
+            "address": "192.168.1.1",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 1530
+        },
+        {
+            "address": "1.1.1.1",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 3510
+        },
+        {
+            "address": "8.8.8.8",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 3510
+        },
+        {
+            "address": "8.8.4.4",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 3510
+        },
+        {
+            "address": "9.9.9.9",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 3510
+        },
+        {
+            "address": "mail.ru",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 3510
+        },
+        {
+            "address": "ya.ru",
+            "bytes": 32,
+            "time_to_life": 64,
+            "timeout": 5310,
+            "interval": 3510
+        }
+    ]
+}
