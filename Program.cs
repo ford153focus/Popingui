@@ -1,5 +1,8 @@
 using System.Data;
 using System.Net.NetworkInformation;
+using System.Reflection;
+using log4net;
+using log4net.Config;
 using Newtonsoft.Json;
 using popingui.Models;
 using Terminal.Gui;
@@ -11,6 +14,7 @@ internal static class Program
     public static Config config = null!;
     public static readonly DataTable Dt = new();
     private static readonly List<Task> Tasks = new();
+    private static readonly ILog log = LogManager.GetLogger(typeof(Program));
 
     /**
      * Background task that infinitely pinging 1 given host
@@ -25,7 +29,7 @@ internal static class Program
             {
                 var reply = pingSender.Send(host.Address, host.TimeOut);
                 host.NumOfSent++;
-                
+
                 if (reply.Status == IPStatus.Success)
                 {
                     host.NumOfReceived++;
@@ -40,6 +44,14 @@ internal static class Program
                     host.NumOfLost++;
                     host.LastPingTiming = -1;
                 }
+            }
+            catch (Exception exception)
+            {
+                host.NumOfSent++;
+                host.NumOfLost++;
+                host.LastPingTiming = -1;
+                
+                log.Error(exception.Message);
             }
             finally
             {
@@ -58,17 +70,18 @@ internal static class Program
             try
             {
                 Dt.Rows.Clear();
-    
-                foreach(var host in config.Hosts.Reverse()) {
+
+                foreach (var host in config.Hosts.Reverse())
+                {
                     Dt.Rows.Add(new object[]
                     {
                         host.Address,
-            
+
                         host.LastPingTiming,
                         host.MinimalPingTiming,
                         host.MaximalPingTiming,
                         host.AveragePingTiming,
-            
+
                         host.NumOfSent,
                         host.NumOfReceived,
                         host.NumOfLost,
@@ -77,7 +90,11 @@ internal static class Program
                     });
                 }
 
-                Terminal.Gui.Application.Refresh();
+                Application.Refresh();
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception.Message);
             }
             finally
             {
@@ -88,6 +105,9 @@ internal static class Program
 
     static async Task Main()
     {
+        var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+        XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
         #region Parse config.json
         {
             string configPath = Path.Combine(Environment.CurrentDirectory, "config.json");
@@ -136,6 +156,10 @@ internal static class Program
         try
         {
             Application.Run(new MyView());
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception.Message);
         }
         finally
         {

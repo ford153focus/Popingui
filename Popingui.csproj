@@ -8,19 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Terminal.Gui" Version="1.*" />
-  </ItemGroup>
 
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Copy SourceFiles="config.json" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="config.json" DestinationFolder="$(PublishDir)" />
-  </Target>
+    <None Update="config.json" CopyToOutputDirectory="Always" />
+    <None Update="log4net.config" CopyToOutputDirectory="Always" />
+  </ItemGroup>
 </Project>
